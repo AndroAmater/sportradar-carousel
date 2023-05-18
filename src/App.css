@@ -4,7 +4,29 @@
   align-items: center;
 }
 
+.carousel {
+    scroll-snap-type: x mandatory;
+    width: 870px;
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    scroll-behavior: smooth;
+}
+
+.carousel__page-indicator {
+  width: 16px;
+  height: 16px;
+  background: black;
+  margin: 0 1px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+}
+
 .card {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-width: 870px;
   width: 870px;
   height: 460px;
   display: flex;
@@ -52,7 +74,6 @@
 .card__center-container {
   display: flex;
   justify-content: space-around;
-  align-items: flex-start;
   width: 100%;
 }
 

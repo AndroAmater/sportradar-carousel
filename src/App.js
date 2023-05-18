@@ -65,6 +65,15 @@ function getMatchStatus(match) {
   }
 }
 
+function changeSlide(matchId) {
+  // TODO: Cache this
+  document.getElementById(`match-id-${matchId}`).scrollIntoView({
+    block: "nearest",
+    inline: "nearest",
+    behavior: "smooth"
+  })
+}
+
 function App() {
   const [sports, setSports] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -87,56 +96,74 @@ function App() {
     <div className="App">
       {sports.map(sport => 
         (
-          <>
+        <>
             <h1 key={sport._id}>{sport.name}</h1>
-            {sport.realcategories.map(category => (
-              <>
-                <h2>{category.name}</h2>
-                {category.tournaments.map(tournament => (
+            <div className="carousel">
+                {sport.realcategories.map(category => (
                   <>
-                    <h3>{tournament.name}</h3>
-                    <strong>{tournament.seasontypename}</strong>
-                    {tournament.matches.map(match => (
-                      <div className={ `card card--status-${getMatchStatus(match)}` }>
-                        <span className="card__titles-container">
-                          <span className="card__title">{tournament.name}</span>
-                          <span className="card__subtitle">{tournament.seasontypename}</span>
-                        </span>
-                        <div className="card__center-container">
-                          <div className="card__country">
-                            <img className="card__country-flag" src={`https://flagcdn.com/w160/${countryCodes[match.teams.home.uid%50]}.webp`} alt={match.teams.home.name} />
-                            <span className="card__country-name">{ match.teams.home.name }</span>
+                    { /* <h2>{category.name}</h2> */ }
+                    {category.tournaments.map(tournament => (
+                      <>
+                        {/* <h3>{tournament.name}</h3> */}
+                        {/* <strong>{tournament.seasontypename}</strong> */}
+                        {tournament.matches.map(match => (
+                          <div 
+                            className={ `card card--status-${getMatchStatus(match)}` }
+                            id={ `match-id-${ match._id }` }
+                            key={ `match-id-${ match._id }` }
+                          >
+                            <span className="card__titles-container">
+                              <span className="card__title">{tournament.name}</span>
+                              <span className="card__subtitle">{tournament.seasontypename}</span>
+                            </span>
+                            <div className="card__center-container">
+                              <div className="card__country">
+                                <img className="card__country-flag" src={`https://flagcdn.com/w160/${countryCodes[match.teams.home.uid%50]}.webp`} alt={match.teams.home.name} />
+                                <span className="card__country-name">{ match.teams.home.name }</span>
+                              </div>
+                              {
+                                getMatchStatus(match) === 'prematch' ?
+                                  (
+                                    <div className="card__vs card__vs--prematch">
+                                      <span className="card__vs-title">VS</span>
+                                      <span className="card__vs-time">{match._dt.time}</span>
+                                      <span className="card__vs-date">{match._dt.date}</span>
+                                    </div>
+                                  ) :
+                                  (
+                                    <div className={ `card__vs card__vs--${getMatchStatus(match)}` }>
+                                      <span>{match.result.home}</span>
+                                      <span className="card__vs-separator">:</span>
+                                      <span>{match.result.away}</span>
+                                    </div>
+                                  )
+                              }
+                              <div className="card__country">
+                                <img className="card__country-flag" src={`https://flagcdn.com/w160/${countryCodes[match.teams.away.uid%50]}.webp`} alt={match.teams.away.name}></img>
+                                <span className="card__country-name">{ match.teams.away.name }</span>
+                              </div>
+                            </div>
+                            <p className={ `card__status card__status--${getMatchStatus(match)}`}>{ match.status.name }</p>
                           </div>
-                          {
-                            getMatchStatus(match) === 'prematch' ?
-                              (
-                                <div className="card__vs card__vs--prematch">
-                                  <span className="card__vs-title">VS</span>
-                                  <span className="card__vs-time">{match._dt.time}</span>
-                                  <span className="card__vs-date">{match._dt.date}</span>
-                                </div>
-                              ) :
-                              (
-                                <div className={ `card__vs card__vs--${getMatchStatus(match)}` }>
-                                  <span>{match.result.home}</span>
-                                  <span className="card__vs-separator">:</span>
-                                  <span>{match.result.away}</span>
-                                </div>
-                              )
-                          }
-                          <div className="card__country">
-                            <img className="card__country-flag" src={`https://flagcdn.com/w160/${countryCodes[match.teams.away.uid%50]}.webp`} alt={match.teams.away.name}></img>
-                            <span className="card__country-name">{ match.teams.away.name }</span>
-                          </div>
-                        </div>
-                        <p className={ `card__status card__status--${getMatchStatus(match)}`}>{ match.status.name }</p>
-                      </div>
+                        ))}
+                      </>
                     ))}
                   </>
                 ))}
-              </>
-            ))}
-          </>
+            </div>
+            <div>
+              {sport.realcategories.map(category => {
+                return category.tournaments.map(tournament => {
+                  return tournament.matches.map(match => (
+                    <button 
+                      onClick={() => changeSlide(match._id)}
+                      className="carousel__page-indicator"
+                    ></button>
+                  ))
+                })
+              })}
+            </div>
+        </>
         ) 
       )}
     </div>
