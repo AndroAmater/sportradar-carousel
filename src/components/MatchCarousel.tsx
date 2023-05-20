@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import './MatchCarousel.css';
 import Card from './Card.tsx'
 
@@ -11,7 +11,7 @@ function changeSlide(matchId: string) {
   })
 }
 
-export default function MatchCarousel(sport: any) {
+export default function MatchCarousel({ sport }) {
   return (
     <div className="carousel-container">
       <h1 key={sport._id}>{sport.name}</h1>
