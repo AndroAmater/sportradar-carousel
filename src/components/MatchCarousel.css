@@ -1,0 +1,25 @@
+.carousel-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel {
+    scroll-snap-type: x mandatory;
+    width: 870px;
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    scroll-behavior: smooth;
+}
+
+.carousel__page-indicator {
+  width: 16px;
+  height: 16px;
+  background: black;
+  margin: 0 1px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+}
