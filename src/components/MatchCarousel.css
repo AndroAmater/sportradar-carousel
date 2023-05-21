@@ -7,13 +7,33 @@
 
 .carousel {
     scroll-snap-type: x mandatory;
-    width: 870px;
+    width: 890px;
     overflow-x: scroll;
     display: flex;
     flex-direction: row;
     scroll-behavior: smooth;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    container-type: inline-size;
+    overflow: hidden;
+}
+
+@container (max-width: 450px) {
+  .carousel {
+    width: 340px;
+  }
+}
+
+@container (min-width: 450px) and (max-width: 870px) {
+  .carousel {
+    width: 470px;
+  }
+}
+
+@container (min-width: 870px) {
+  .carousel {
+    width: 890px;
+  }
 }
 
 .carousel::-webkit-scrollbar {

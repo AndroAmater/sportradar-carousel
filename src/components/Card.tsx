@@ -91,6 +91,8 @@ function App({
               alt={match.homeTeamName} 
             />
             <span className="card__country-name">{ match.homeTeamName }</span>
+            <span className="card__country-medium-name">{ match.homeTeamMediumName }</span>
+            <span className="card__country-short-name">{ match.homeTeamShortName }</span>
           </div>
           {
             getMatchStatus(match) === 'prematch' ?
@@ -116,6 +118,8 @@ function App({
               alt={match.awayTeamName}
             />
             <span className="card__country-name">{ match.awayTeamName }</span>
+            <span className="card__country-medium-name">{ match.awayTeamMediumName }</span>
+            <span className="card__country-short-name">{ match.awayTeamShortName }</span>
           </div>
         </div>
         <p className={ `card__status card__status--${getMatchStatus(match)}`}>{ match.statusName }</p>

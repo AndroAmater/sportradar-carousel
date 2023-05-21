@@ -34,6 +34,7 @@ const matchesSlice = createSlice({
         output[sport._id] = {}
         output[sport._id].name = sport.name
         output[sport._id].id = sport._id
+        console.log(sport)
         output[sport._id].matches = sport.realcategories.flatMap((category: any) => 
           category.tournaments.flatMap((tournament: any) => 
             tournament.matches.flatMap((match: any) => ({
@@ -42,9 +43,13 @@ const matchesSlice = createSlice({
               tournamentSeasonTypeName: tournament.seasontypename,
               homeTeamUid: match.teams.home.uid,
               homeTeamName: match.teams.home.name,
+              homeTeamMediumName: match.teams.home.mediumname,
+              homeTeamShortName: match.teams.home.abbr,
               homeTeamResult: match.result.home,
               awayTeamUid: match.teams.away.uid,
               awayTeamName: match.teams.away.name,
+              awayTeamMediumName: match.teams.away.mediumname,
+              awayTeamShortName: match.teams.away.abbr,
               awayTeamResult: match.result.away,
               time: match._dt.time,
               date: match._dt.date,
