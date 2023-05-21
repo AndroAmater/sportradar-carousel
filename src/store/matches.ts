@@ -41,6 +41,7 @@ const matchesSlice = createSlice({
               id: match._id,
               tournamentName: tournament.name,
               tournamentSeasonTypeName: tournament.seasontypename,
+              categoryName: category.name,
               homeTeamUid: match.teams.home.uid,
               homeTeamName: match.teams.home.name,
               homeTeamMediumName: match.teams.home.mediumname,

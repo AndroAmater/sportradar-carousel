@@ -80,8 +80,8 @@ function App({
         onMouseLeave={ onMouseLeave }
       >
         <span className="card__titles-container">
-          <span className="card__title">{match.tournamentName}</span>
-          <span className="card__subtitle">{match.tournamentSeasonTypeName}</span>
+          <span className="card__title">{`${match.tournamentName} - ${match.tournamentSeasonTypeName}`}</span>
+          <span className="card__subtitle">{match.categoryName}</span>
         </span>
         <div className="card__center-container">
           <div className="card__country">
