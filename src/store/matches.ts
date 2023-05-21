@@ -8,7 +8,7 @@ export const fetchMatches = createAsyncThunk(
     if (
         (thunkApi.getState() as any).matches.loading
         || (thunkApi.getState() as any).matches.loaded
-    ) new Promise((_, reject) => reject())
+    ) new Promise((_, reject) => reject('Already loading or loaded'))
 
     // TODO: Imporove interface
     let res = await axios.get('https://lmt.fn.sportradar.com/demolmt/en/Etc:UTC/gismo/event_fullfeed/0/1/12074')
