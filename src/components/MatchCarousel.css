@@ -16,6 +16,7 @@
     scrollbar-width: none;
     container-type: inline-size;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 
 @container (max-width: 450px) {
