@@ -1,15 +1,52 @@
 import * as React from "react"
 import './MatchCarousel.css';
 import Card from './Card.tsx'
+import { useDispatch } from 'react-redux'
+import { fetchMatches } from '../store/matches'
+import { useSelector } from 'react-redux'
+import { RootState, AppDispatch } from '../store/store'
 
 
-export default function MatchCarousel({ sport }) {
+export default function MatchCarousel({ sportId = null, max = 10 }) {
+  const dispatch: AppDispatch = useDispatch()
+  const matches = useSelector((state: RootState) => state.matches)
+  const [sport, setSport] = React.useState(null)
   const autoScrolling = React.useRef(false)
   const [currentSlide, setCurrentSlide] = React.useState(0)
   const carousel = React.useRef(null)
   const scrollEndTimer = React.useRef(null)
   const [slideIds, setSlideIds] = React.useState([])
   const scrollInterval = React.useRef(null)
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+        await dispatch(fetchMatches())
+    }
+    fetchData()
+  }, [dispatch])
+
+  React.useEffect(() => {
+    if (sportId === null) {
+      const allMatches = { 
+        id: 0,
+        name: "All Sports",
+        // TODO: Improve interfaces
+        matches: Object.values(matches.data).reduce((matches: any, currentSport: any) => { 
+          // TODO: Optimize this
+          matches = { ...matches, ...currentSport.matches}
+          return matches
+        }, {}) 
+      }
+      setSport(allMatches)
+      setSlideIds(Object.keys(allMatches.matches).slice(0, max - 1))
+    } else if (matches.data[sportId]) {
+      setSport(matches.data[sportId])
+      setSlideIds(Object.keys(matches.data[sportId].matches).slice(0, max - 1))
+    } else {
+      setSport(null)
+      setSlideIds([])
+    }
+  }, [setSport, setSlideIds, matches, sportId, max])
 
   function handleScroll() {
       clearInterval(scrollInterval.current)
@@ -62,11 +99,11 @@ export default function MatchCarousel({ sport }) {
 
   // Run when the component is rendered for the first time
   React.useEffect(() => {
+    if (!sport) return
     // Add intersection observer to handle dot changes
     const observer = new IntersectionObserver((entries) => {
       if (autoScrolling.current) return
       setCurrentSlide(parseInt(entries[0].target.getAttribute('data-index')))
-      console.log(parseInt(entries[0].target.getAttribute('data-index')))
     }, {
       root: carousel.current,
       rootMargin: '0px',
@@ -80,18 +117,14 @@ export default function MatchCarousel({ sport }) {
     return () => {
       observer.disconnect()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slideIds.length])
-
-  React.useEffect(() => {
-    setSlideIds(Object.keys(sport.matches))
-  }, [sport])
+  }, [slideIds.length, sport])
 
   React.useEffect(() => {
     resetInterval()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slideIds.length])
 
+  if (!sport) return null
 
   return (
     <div className="carousel-container">
