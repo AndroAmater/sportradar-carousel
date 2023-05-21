@@ -68,28 +68,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-
-
-
-
-
-# TODO:
-X Implement redux store for api calls and data storage
-X Optimize data format for easier iteration
-X Add selected dot styles
-X Add interval card changing
-X Add reset interval on dot click
-- Add responsive design
-- Add accessibility features
-- Review and fix styles
-- Remove watermarks from top right corners of background images
-- Point out that the image in the ended status is different than on the designs
-- Add dot click transitions
-- Add image lazy loading
-- Add suspense states
-- Add loaders
-- Add error handling
-- Acknowledge that the crests are not from the provided API (The api doesn't work, but the random flag is generated from the team id)
-- Style the scrollbar
-- Acknowledge that the components aren't tested on safari due to the lack of a mac
