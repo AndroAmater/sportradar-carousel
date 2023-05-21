@@ -14,27 +14,27 @@ function changeSlide(matchId: string) {
 export default function MatchCarousel({ sport }) {
   return (
     <div className="carousel-container">
-      <h1 key={sport._id}>{sport.name}</h1>
+      <h1 key={sport.id}>{sport.name}</h1>
       <div className="carousel">
         {
-          sport.realcategories.flatMap((category: any) => 
-            category.tournaments.flatMap((tournament: any) => 
-                tournament.matches.map((match: any) => Card(match, tournament))
-            )
-          )
+            Object.values(sport.matches).map((match: any) => ( 
+              <Card
+                match={match}
+                key={match.id}
+              />
+            ))
         }
       </div>
       <div>
-        {sport.realcategories.map((category: any) => {
-          return category.tournaments.map((tournament: any) => {
-            return tournament.matches.map((match: any) => (
+        {
+            Object.values(sport.matches).map((match: any) => (
               <button 
-                onClick={() => changeSlide(match._id)}
+                key={match.id}
+                onClick={() => changeSlide(match.id)}
                 className="carousel__page-indicator"
               ></button>
             ))
-          })
-        })}
+        }
       </div>
     </div>
   );

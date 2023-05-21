@@ -20,12 +20,14 @@ function App() {
 
   return (
     <div className="App">
-      {matches.map(sport => (
-        <MatchCarousel 
-          sport={sport} 
-          key={sport._uid}
-        />
-      ))}
+      {
+        Object.values(matches.data).map((sport: any) => (
+          <MatchCarousel 
+            sport={sport} 
+            key={sport.id}
+          />
+        ))
+      }
     </div>
   );
 }
