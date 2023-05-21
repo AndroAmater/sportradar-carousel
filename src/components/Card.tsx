@@ -64,12 +64,20 @@ function getMatchStatus(match: any) {
   }
 }
 
-function App({ match }) {
-  return (
+function App({ 
+    match, 
+    index = null, 
+    onMouseEnter = null, 
+    onMouseLeave = null
+  }) {
+    return (
       <div 
         className={ `card card--status-${getMatchStatus(match)}` }
         id={ `match-id-${ match.id }` }
         key={ `match-id-${ match.id }` }
+        data-index={ index }
+        onMouseEnter={ onMouseEnter }
+        onMouseLeave={ onMouseLeave }
       >
         <span className="card__titles-container">
           <span className="card__title">{match.tournamentName}</span>
