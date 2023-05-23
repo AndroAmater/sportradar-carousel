@@ -1,6 +1,8 @@
 import * as React from "react"
 import './Card.css';
 
+import { Match } from '../store/matches'
+
 var countryCodes = [
   'us', // United States
   'ca', // Canada
@@ -54,10 +56,10 @@ var countryCodes = [
   'be', // Belgium
 ];
 
-function getMatchStatus(match: any) {
-  if (match.statusId === 100) {
+function getMatchStatus(match: Match) {
+  if (match.statusId === "100") {
     return 'postmatch'
-  } else if (match.statusId === 0) {
+  } else if (match.statusId === "0") {
     return 'prematch'
   } else {
     return 'live'
@@ -65,7 +67,7 @@ function getMatchStatus(match: any) {
 }
 
 interface CardProps {
-  match: any,
+  match: Match,
   index: number,
 }
 
@@ -89,7 +91,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(({
           <div className="card__country">
             <img 
               className="card__country-flag" 
-              src={`https://flagcdn.com/w160/${countryCodes[match.homeTeamUid%50]}.webp`} 
+              src={`https://flagcdn.com/w160/${countryCodes[parseInt(match.homeTeamUid) % 50]}.webp`} 
               alt={match.homeTeamName} 
             />
             <span className="card__country-name">{ match.homeTeamName }</span>
@@ -116,7 +118,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(({
           <div className="card__country">
             <img 
               className="card__country-flag" 
-              src={`https://flagcdn.com/w160/${countryCodes[match.awayTeamUid%50]}.webp`} 
+              src={`https://flagcdn.com/w160/${countryCodes[parseInt(match.awayTeamUid) % 50]}.webp`} 
               alt={match.awayTeamName}
             />
             <span className="card__country-name">{ match.awayTeamName }</span>
