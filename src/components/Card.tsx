@@ -64,20 +64,22 @@ function getMatchStatus(match: any) {
   }
 }
 
-function App({ 
+interface CardProps {
+  match: any,
+  index: number,
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(({ 
     match, 
     index = null, 
-    onMouseEnter = null, 
-    onMouseLeave = null
-  }) {
+  }, ref) => {
     return (
       <div 
+        ref={ref}
         className={ `card card--status-${getMatchStatus(match)}` }
         id={ `match-id-${ match.id }` }
         key={ `match-id-${ match.id }` }
         data-index={ index }
-        onMouseEnter={ onMouseEnter }
-        onMouseLeave={ onMouseLeave }
       >
         <span className="card__titles-container">
           <span className="card__title">{`${match.tournamentName} - ${match.tournamentSeasonTypeName}`}</span>
@@ -125,6 +127,6 @@ function App({
         <p className={ `card__status card__status--${getMatchStatus(match)}`}>{ match.statusName }</p>
       </div>
   );
-}
+})
 
-export default App;
+export default Card;

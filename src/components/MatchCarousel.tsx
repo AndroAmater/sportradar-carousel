@@ -16,8 +16,10 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
   const carousel = React.useRef(null)
   const scrollEndTimer = React.useRef(null)
   const [slideIds, setSlideIds] = React.useState([])
+  const [slides, setSlides] = React.useState([])
   const scrollInterval = React.useRef(null)
 
+  // Dispatch fetchMatches on mount
   React.useEffect(() => {
     const fetchData = async () => {
         await dispatch(fetchMatches())
@@ -25,8 +27,9 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
     fetchData()
   }, [dispatch])
 
+  // Set sport and slideIds when matches.data changes
   React.useEffect(() => {
-    if (sportId === null) {
+    if (sportId === null && Object.keys(matches).length > 0) {
       const allMatches = { 
         id: 0,
         name: "All Sports",
@@ -39,15 +42,20 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
       }
       setSport(allMatches)
       setSlideIds(Object.keys(allMatches.matches).slice(0, max - 1))
+
     } else if (matches.data[sportId]) {
       setSport(matches.data[sportId])
       setSlideIds(Object.keys(matches.data[sportId].matches).slice(0, max - 1))
+
     } else {
       setSport(null)
+      resetInterval()
       setSlideIds([])
+      setSlides([])
     }
   }, [setSport, setSlideIds, matches, sportId, max])
 
+  // Handle scroll events
   function handleScroll() {
       clearInterval(scrollInterval.current)
       clearTimeout(scrollEndTimer.current)
@@ -71,6 +79,7 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
 
   function resetInterval() {
     clearInterval(scrollInterval.current)
+    if (!sport) return
     scrollInterval.current = setInterval(() => {
       setCurrentSlide(prevSlide => {
         if (prevSlide < slideIds.length - 1) {
@@ -85,12 +94,9 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
   }
 
   function dotChangeSlide(slideIdIndex: number) {
-    const matchId = sport.matches[slideIds[slideIdIndex]].id
-    // TODO: Cache this
-    document.getElementById(`match-id-${matchId}`).scrollIntoView({
-      block: "nearest",
-      inline: "nearest",
-      behavior: "smooth"
+    carousel.current.scrollTo({
+      left: slides[slideIdIndex].current.offsetLeft,
+      behavior: 'smooth'
     })
     autoScrolling.current = true
     setCurrentSlide(slideIdIndex)
@@ -124,10 +130,23 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slideIds.length])
 
+  React.useEffect(() => {
+    setSlides(slideIds.map((_, i: number) => {
+      return slides[i] ?? React.createRef()
+    }))
+  }, [slideIds])
+
   if (!sport) return null
 
   return (
-    <div className="carousel-container">
+    <div 
+      className="carousel-container"
+      onMouseEnter={() => {
+        clearInterval(scrollInterval.current)
+        console.log('test')
+      }}
+      onMouseLeave={() => resetInterval()}
+    >
       <h1 key={sport.id}>{sport.name}</h1>
       <div 
         className="carousel" 
@@ -135,15 +154,16 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
         onScroll={handleScroll}
       >
         {
-            slideIds.map((slideId: any, index: number) => ( 
-              <Card
-                match={sport.matches[slideId]}
-                key={sport.matches[slideId].id}
-                index={index}
-                onMouseEnter={() => clearInterval(scrollInterval.current)}
-                onMouseLeave={() => resetInterval()}
-              />
-            ))
+            slideIds.map((slideId: any, index: number) => {
+                return ( 
+                  <Card
+                    ref={slides[index]}
+                    match={sport.matches[slideId]}
+                    key={sport.matches[slideId].id}
+                    index={index}
+                  />
+                )
+            })
         }
       </div>
       <div>
