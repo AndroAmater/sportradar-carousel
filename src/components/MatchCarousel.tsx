@@ -137,7 +137,7 @@ export default function MatchCarousel({
   // Dispatch fetchMatches on mount
   React.useEffect(() => {
     const fetchData = async () => {
-        await dispatch(fetchMatches())
+      await dispatch(fetchMatches())
     }
     fetchData()
   }, [])
@@ -145,12 +145,12 @@ export default function MatchCarousel({
 
   // Handle scroll events
   const handleScroll = React.useCallback(() => {
-      clearInterval(scrollStates.current.scrollInterval)
-      clearTimeout(scrollStates.current.scrollEndTimer)
-      scrollStates.current.scrollEndTimer = setTimeout(() => {
-        scrollStates.current.autoScrolling = false
-        resetInterval()
-      }, 100)
+    clearInterval(scrollStates.current.scrollInterval)
+    clearTimeout(scrollStates.current.scrollEndTimer)
+    scrollStates.current.scrollEndTimer = setTimeout(() => {
+      scrollStates.current.autoScrolling = false
+      resetInterval()
+    }, 100)
   }, [scrollStates, resetInterval])
 
   const dotChangeSlide = React.useCallback((index: number) => {
@@ -198,48 +198,48 @@ export default function MatchCarousel({
   }, [resetInterval])
 
   const carouselItems = React.useMemo(() => {
-      if (!sport) return null
-      return (
-        <>
-          <h1 key={sport.id}>{sport.name}</h1>
-          <div 
-            className="carousel" 
-            ref={carousel}
-            onScroll={handleScroll}
-          >
-            {
-                slides.map((_, index: number) => {
-                    return ( 
-                      <Card
-                        ref={slides[index].card}
-                        match={Object.values(sport.matches)[index]}
-                        key={Object.values(sport.matches)[index].id}
-                        index={index}
-                      />
-                    )
-                })
-            }
-          </div>
-          <div>
-            {
-              slides.map((_, index: number) => (
-                <button 
-                  key={index}
-                  ref={slides[index].dot}
-                  onClick={() => dotChangeSlide(index)}
-                  data-index={index}
-                  data-active={index === 0 ? '' : null}
-                  className="carousel__page-indicator"
+    if (!sport) return null
+    return (
+      <>
+        <h1 key={sport.id}>{sport.name}</h1>
+        <div 
+          className="carousel" 
+          ref={carousel}
+          onScroll={handleScroll}
+        >
+          {
+            slides.map((_, index: number) => {
+              return ( 
+                <Card
+                  ref={slides[index].card}
+                  match={Object.values(sport.matches)[index]}
+                  key={Object.values(sport.matches)[index].id}
+                  index={index}
                 />
-              ))
-            }
-          </div>
-        </>
-      )
+              )
+            })
+          }
+        </div>
+        <div>
+          {
+            slides.map((_, index: number) => (
+              <button 
+                key={index}
+                ref={slides[index].dot}
+                onClick={() => dotChangeSlide(index)}
+                data-index={index}
+                data-active={index === 0 ? '' : null}
+                className="carousel__page-indicator"
+              />
+            ))
+          }
+        </div>
+      </>
+    )
   }, [sport, slides, handleScroll, dotChangeSlide])
 
   const loadingState = React.useMemo(() => {
-      return (
+    return (
       <>
         <div className="carousel carousel--loading">
           <div className="carousel__loading-message-container">
@@ -248,7 +248,7 @@ export default function MatchCarousel({
           </div>
         </div>
       </>
-      )
+    )
   }, [])
 
   const errorState = React.useMemo(() => {

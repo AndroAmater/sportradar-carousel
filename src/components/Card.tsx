@@ -72,62 +72,62 @@ interface CardProps {
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(({ 
-    match, 
-    index = null, 
-  }, ref) => {
-    return (
-      <div 
-        ref={ref}
-        className={ `card card--status-${getMatchStatus(match)}` }
-        id={ `match-id-${ match.id }` }
-        key={ `match-id-${ match.id }` }
-        data-index={ index }
-      >
-        <span className="card__titles-container">
-          <span className="card__title">{`${match.tournamentName} - ${match.tournamentSeasonTypeName}`}</span>
-          <span className="card__subtitle">{match.categoryName}</span>
-        </span>
-        <div className="card__center-container">
-          <div className="card__country">
-            <img 
-              className="card__country-flag" 
-              src={`https://flagcdn.com/w160/${countryCodes[parseInt(match.homeTeamUid) % 50]}.webp`} 
-              alt={match.homeTeamName} 
-            />
-            <span className="card__country-name">{ match.homeTeamName }</span>
-            <span className="card__country-medium-name">{ match.homeTeamMediumName }</span>
-            <span className="card__country-short-name">{ match.homeTeamShortName }</span>
-          </div>
-          {
-            getMatchStatus(match) === 'prematch' ?
-              (
-                <div className="card__vs card__vs--prematch">
-                  <span className="card__vs-title">VS</span>
-                  <span className="card__vs-time">{match.time}</span>
-                  <span className="card__vs-date">{match.date}</span>
-                </div>
-              ) :
-              (
-                <div className={ `card__vs card__vs--${getMatchStatus(match)}` }>
-                  <span>{match.homeTeamResult}</span>
-                  <span className="card__vs-separator">:</span>
-                  <span>{match.awayTeamResult}</span>
-                </div>
-              )
-          }
-          <div className="card__country">
-            <img 
-              className="card__country-flag" 
-              src={`https://flagcdn.com/w160/${countryCodes[parseInt(match.awayTeamUid) % 50]}.webp`} 
-              alt={match.awayTeamName}
-            />
-            <span className="card__country-name">{ match.awayTeamName }</span>
-            <span className="card__country-medium-name">{ match.awayTeamMediumName }</span>
-            <span className="card__country-short-name">{ match.awayTeamShortName }</span>
-          </div>
+  match, 
+  index = null, 
+}, ref) => {
+  return (
+    <div 
+      ref={ref}
+      className={ `card card--status-${getMatchStatus(match)}` }
+      id={ `match-id-${ match.id }` }
+      key={ `match-id-${ match.id }` }
+      data-index={ index }
+    >
+      <span className="card__titles-container">
+        <span className="card__title">{`${match.tournamentName} - ${match.tournamentSeasonTypeName}`}</span>
+        <span className="card__subtitle">{match.categoryName}</span>
+      </span>
+      <div className="card__center-container">
+        <div className="card__country">
+          <img 
+            className="card__country-flag" 
+            src={`https://flagcdn.com/w160/${countryCodes[parseInt(match.homeTeamUid) % 50]}.webp`} 
+            alt={match.homeTeamName} 
+          />
+          <span className="card__country-name">{ match.homeTeamName }</span>
+          <span className="card__country-medium-name">{ match.homeTeamMediumName }</span>
+          <span className="card__country-short-name">{ match.homeTeamShortName }</span>
         </div>
-        <p className={ `card__status card__status--${getMatchStatus(match)}`}>{ match.statusName }</p>
+        {
+          getMatchStatus(match) === 'prematch' ?
+            (
+              <div className="card__vs card__vs--prematch">
+                <span className="card__vs-title">VS</span>
+                <span className="card__vs-time">{match.time}</span>
+                <span className="card__vs-date">{match.date}</span>
+              </div>
+            ) :
+            (
+              <div className={ `card__vs card__vs--${getMatchStatus(match)}` }>
+                <span>{match.homeTeamResult}</span>
+                <span className="card__vs-separator">:</span>
+                <span>{match.awayTeamResult}</span>
+              </div>
+            )
+        }
+        <div className="card__country">
+          <img 
+            className="card__country-flag" 
+            src={`https://flagcdn.com/w160/${countryCodes[parseInt(match.awayTeamUid) % 50]}.webp`} 
+            alt={match.awayTeamName}
+          />
+          <span className="card__country-name">{ match.awayTeamName }</span>
+          <span className="card__country-medium-name">{ match.awayTeamMediumName }</span>
+          <span className="card__country-short-name">{ match.awayTeamShortName }</span>
+        </div>
       </div>
+      <p className={ `card__status card__status--${getMatchStatus(match)}`}>{ match.statusName }</p>
+    </div>
   );
 })
 
