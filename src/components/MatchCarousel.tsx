@@ -189,6 +189,14 @@ export default function MatchCarousel({
     }
   }, [slides, sport])
 
+  const handleMouseEnter = React.useCallback(() => {
+    clearInterval(scrollStates.current.scrollInterval)
+  }, [scrollStates])
+
+  const handleMouseLeave = React.useCallback(() => {
+    resetInterval()
+  }, [resetInterval])
+
   const carouselItems = React.useMemo(() => {
       if (!sport) return null
       return (
@@ -268,8 +276,8 @@ export default function MatchCarousel({
   return (
     <div 
       className="carousel-container"
-      onMouseEnter={() => clearInterval(scrollStates.current.scrollInterval)}
-      onMouseLeave={() => resetInterval()}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {carouselBody}
     </div>
