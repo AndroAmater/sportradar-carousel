@@ -20,7 +20,7 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
 
   const dispatch: AppDispatch = useDispatch()
 
-  const matches = useSelector((state: RootState) => state.matches)
+  const sportsData = useSelector((state: RootState) => state.matches)
 
   const scrollStates = React.useRef<{
     autoScrolling: boolean,
@@ -43,25 +43,30 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
     let sport: Sport
     let slides: React.RefObject<HTMLDivElement>[]
 
-    if (sportId === null && Object.keys(matches).length > 0) {
+    const sports = Object.values(sportsData.data)
+
+    if (sportId === null && sports.length > 0) {
+      const data = []
+      for (let i = 0; i < sports.length; i++) {
+        if (data.length === max) break
+        for (let k = 0; k < sports[i].matches.length; k++) {
+          if (data.length === max) break
+          data.push(sports[i].matches[k])
+        }
+      }
       sport = { 
         id: "0",
         name: "All Sports",
-        // TODO: Optimize this
-        matches: Object.values(matches.data).reduce((matches: { [key: string]: Match }, currentSport: Sport) => { 
-          Object.values(currentSport.matches).reduce((matches: { [key: string]: Match }, match: Match) => {
-            if (Object.keys(matches).length < max) {
-              matches[match.id] = match
-            }
-            return matches
-          }, matches)
-          return matches
-        }, {}) 
+        matches: data 
       }
       slides = Object.keys(sport.matches).map(() => React.createRef())
 
-    } else if (matches.data[sportId]) {
-      sport = matches.data[sportId]
+    } else if (sportsData.data[sportId]) {
+      sport = {
+        id: sportsData.data[sportId].id,
+        name: sportsData.data[sportId].name,
+        matches: sportsData.data[sportId].matches.slice(0, max)
+      }
       slides = Object.keys(sport.matches).map(() => React.createRef())
 
     } else {
@@ -70,7 +75,7 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
     }
 
     return {sport, slides}
-  }, [matches, sportId, max])
+  }, [sportsData, sportId, max])
 
   const intervalChangeSlide = React.useCallback((index: number) => {
     if (!carousel.current) return
@@ -99,7 +104,7 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
 
   React.useEffect(() => {
     resetInterval()
-  }, [sportId, matches, max])
+  }, [sportId, sportsData, max])
 
   // Dispatch fetchMatches on mount
   React.useEffect(() => {
@@ -217,9 +222,9 @@ export default function MatchCarousel({ sportId = null, max = 10 }) {
   }, [])
 
   let carouselBody: JSX.Element
-  if (matches.error) {
+  if (sportsData.error) {
     carouselBody = errorState
-  } else if (matches.loading || !matches.loaded || !sport) {
+  } else if (sportsData.loading || !sportsData.loaded || !sport) {
     carouselBody = loadingState
   } else {
     carouselBody = carouselItems

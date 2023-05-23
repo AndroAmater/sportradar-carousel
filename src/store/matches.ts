@@ -25,7 +25,7 @@ export interface Match {
 export interface Sport {
     name: string,
     id: string,
-    matches: { [key: string]: Match }
+    matches: Match[]
 }
 
 export interface MatchesState {
@@ -134,7 +134,7 @@ const matchesSlice = createSlice<MatchesState, {}, "matches">({
           output[sport._id] = {
             name: sport.name,
             id: sport._id,
-            matches: {}
+            matches: []
           }
           output[sport._id].matches = sport.realcategories.flatMap((category: ServerCategory) => 
             category.tournaments.flatMap((tournament: ServerTournament) => 
@@ -159,10 +159,7 @@ const matchesSlice = createSlice<MatchesState, {}, "matches">({
                 statusId: match.status._id
               }))
             )
-          ).reduce((output: { [key: string]: Match }, match: Match) => {
-            output[match.id] = match
-            return output
-          }, output[sport._id].matches)
+          )
           return output
         }, {} as { [key: string]: Sport })
 
