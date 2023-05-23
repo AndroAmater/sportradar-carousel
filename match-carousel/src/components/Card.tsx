@@ -57,9 +57,9 @@ var countryCodes = [
 ];
 
 function getMatchStatus(match: Match) {
-  if (match.statusId === "100") {
+  if (match.statusId === 100) {
     return 'postmatch'
-  } else if (match.statusId === "0") {
+  } else if (match.statusId === 0) {
     return 'prematch'
   } else {
     return 'live'

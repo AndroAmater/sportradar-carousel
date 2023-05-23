@@ -19,7 +19,7 @@ export interface Match {
   time: string,
   date: string,
   statusName: string,
-  statusId: string
+  statusId: number
 }
 
 export interface Sport {
@@ -62,7 +62,7 @@ interface ServerMatch {
   },
   status: {
     name: string,
-    _id: string
+    _id: number
   }
 }
 
