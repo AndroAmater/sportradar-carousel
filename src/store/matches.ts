@@ -103,7 +103,7 @@ export const fetchMatches = createAsyncThunk(
 
     // TODO: Handle errors
     thunkApi.dispatch(setLoading())
-    return await axios.get('https://lmt.fn.sportradar.com/demolmt/en/Etc:UTC/gismo/event_fullfeed/0/1/12074') as ServerResponse
+    return (await axios.get('https://lmt.fn.sportradar.com/demolmt/en/Etc:UTC/gismo/event_fullfeed/0/1/12074') as ServerResponse).data.doc[0].data
   }
 );
 
@@ -120,7 +120,7 @@ const matchesSlice = createSlice<MatchesState, {}, "matches">({
   extraReducers: (builder) => {
     builder.addCase(fetchMatches.fulfilled, (_, action) => {
       
-      let data: { [key: string]: Sport } = action.payload.data.doc[0].data
+      let data: { [key: string]: Sport } = action.payload
         .reduce((output: { [key: string]: Sport }, sport: ServerSport) => {
           output[sport._id] = {
             name: sport.name,
