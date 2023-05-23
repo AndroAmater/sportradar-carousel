@@ -86,7 +86,7 @@
   transition: transform .15s, background .15s;
 }
 
-.carousel__page-indicator--active {
+.carousel__page-indicator[data-active] {
   transform: scale(1.2);
   background: #7F7F7F;
 }
