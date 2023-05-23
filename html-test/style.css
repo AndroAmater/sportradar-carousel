@@ -1,0 +1,288 @@
+/* This is not ideal */
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  container-type: inline-size;
+  box-sizing: border-box;
+}
+
+.card {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background: black;
+  color: white;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-position: center;
+  background-size: cover;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, .65);
+  aspect-ratio: 870 / 460;
+  padding: 5px 25px;
+  box-sizing: border-box;
+  margin: 0 10px;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.25));
+}
+
+.card__titles-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.card__title {
+    font-weight: 100;
+    font-size: 27px;
+}
+
+.card__subtitle {
+    margin-top: 5px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.card__country-flag {
+    aspect-ratio: 160 / 107;
+    object-fit: contain;
+}
+
+.card--status-prematch {
+  background-image: url("assets/bg-prematch.jpg");
+}
+
+.card--status-live {
+  background-image: url("assets/bg-live.jpg");
+}
+
+.card--status-postmatch {
+  background-image: url("assets/bg-postmatch.jpg");
+}
+
+.card__center-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.card__country {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 0;
+}
+
+.card__country-flag {
+  margin-bottom: 15px;
+  width: 145px;
+}
+
+.card__country-name {
+  font-size: 35px;
+  text-align: center;
+}
+
+.card__country-medium-name {
+  text-align: center;
+  display: none;
+}
+
+.card__country-short-name {
+  text-align: center;
+  display: none;
+}
+
+.card__vs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 50px;
+}
+
+.card__vs--postmatch, .card__vs--live {
+  font-size: 75px;
+  font-weight: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.card__vs-separator {
+  padding: 0 10px;
+}
+
+.card__vs-title {
+  font-size: 27px;
+  margin-bottom: 5px;
+}
+
+.card__vs-time {
+  font-size: 27px;
+}
+
+.card__vs-date {
+  font-size: 18px;
+}
+
+.card__status {
+  text-align: center;
+  padding: 2px 10px;
+  text-transform: uppercase;
+  font-size: 14px;
+  border-radius: 4px;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.card__status--prematch {
+  background: #555555;
+}
+
+.card__status--live {
+  background: #ff9600;
+}
+
+.card__status--postmatch {
+  background: #2c8604;
+}
+
+@container (max-width: 449px) {
+  .card {
+    padding: 5px 10px;
+  }
+
+  .card__title {
+      font-size: 11px;
+      font-weight: 400;
+  }
+
+  .card__subtitle {
+      font-size: 8px;
+      font-weight: 400;
+  }
+
+  .card__country-flag {
+      width: 55px;
+      margin-bottom: 5px;
+  }
+
+  .card__country-name {
+    display: none;
+  }
+
+  .card__country-medium-name {
+    display: none;
+  }
+
+  .card__country-short-name {
+    display: block;
+    font-size: 15px;
+  }
+
+  .card__status {
+    font-size: 6px;
+    padding: 2px 6px;
+  }
+
+  .card__vs {
+    padding: 0 25px;
+  }
+
+  .card__vs--postmatch, .card__vs--live {
+    font-size: 24px;
+    padding: 0 10px;
+  }
+
+  .card__vs-separator {
+    padding: 0 10px;
+  }
+
+  .card__vs-title {
+    font-size: 11px;
+    margin-bottom: 5px;
+  }
+
+  .card__vs-time {
+    font-size: 11px;
+  }
+
+  .card__vs-date {
+    font-size: 8px;
+  }
+}
+
+@container (min-width: 450px) and (max-width: 869px) {
+  .card__title {
+      font-size: 15px;
+  }
+
+  .card__subtitle {
+      font-size: 11px;
+  }
+
+  .card__country-flag {
+      width: 75px;
+  }
+
+  .card__country-name {
+    display: none;
+  }
+
+  .card__country-medium-name {
+    font-size: 20px;
+    display: block;
+  }
+
+  .card__country-short-name {
+    display: none;
+  }
+
+  .card__status {
+    font-size: 8px;
+    padding: 2px 8px;
+  }
+
+  .card__vs {
+    padding: 0 30px;
+  }
+
+  .card__vs--postmatch, .card__vs--live {
+    font-size: 35px;
+  }
+
+  .card__vs-separator {
+    padding: 0 10px;
+  }
+
+  .card__vs-title {
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+
+  .card__vs-time {
+    font-size: 15px;
+  }
+
+  .card__vs-date {
+    font-size: 11px;
+  }
+}
