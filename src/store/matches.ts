@@ -1,5 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axios from 'axios'
+
+export const setLoading = createAction('matches/setLoading')
 
 export const fetchMatches = createAsyncThunk(
   'matches/fetchMatches',
@@ -8,8 +10,9 @@ export const fetchMatches = createAsyncThunk(
     if (
         (thunkApi.getState() as any).matches.loading
         || (thunkApi.getState() as any).matches.loaded
-    ) new Promise((_, reject) => reject('Already loading or loaded'))
+    ) return new Promise((_, reject) => reject('Already loading or loaded'))
 
+    thunkApi.dispatch(setLoading())
     // TODO: Imporove interface
     let res = await axios.get('https://lmt.fn.sportradar.com/demolmt/en/Etc:UTC/gismo/event_fullfeed/0/1/12074')
     return res.data
@@ -34,14 +37,13 @@ const matchesSlice = createSlice({
         output[sport._id] = {}
         output[sport._id].name = sport.name
         output[sport._id].id = sport._id
-        console.log(sport)
         output[sport._id].matches = sport.realcategories.flatMap((category: any) => 
           category.tournaments.flatMap((tournament: any) => 
             tournament.matches.flatMap((match: any) => ({
               id: match._id,
+              categoryName: category.name,
               tournamentName: tournament.name,
               tournamentSeasonTypeName: tournament.seasontypename,
-              categoryName: category.name,
               homeTeamUid: match.teams.home.uid,
               homeTeamName: match.teams.home.name,
               homeTeamMediumName: match.teams.home.mediumname,
@@ -69,18 +71,18 @@ const matchesSlice = createSlice({
           loaded: true,
           loading: false
       };
-    }).addCase(fetchMatches.pending, () => {
-        return { 
-            data: {},
-            loaded: false,
-            loading: true
-        };
     }).addCase(fetchMatches.rejected, () => {
         return { 
             data: {},
             loaded: true,
             loading: false
         };
+    }).addCase(setLoading, () => {
+        return {
+            data: {},
+            loading: true,
+            loaded: false
+        }
     });
   },
 });
