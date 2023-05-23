@@ -31,7 +31,8 @@ export interface Sport {
 export interface MatchesState {
     data: { [key: string]: Sport },
     loaded: boolean,
-    loading: boolean
+    loading: boolean,
+    error: boolean
 }
 
 interface ServerMatch {
@@ -90,20 +91,27 @@ interface ServerResponse {
     }
 }
 
-export const setLoading = createAction('matches/setLoading')
+export const setLoading = createAction('matches/setLoading', (state: boolean) => ({ payload: state }))
+export const handleError = createAction('matches/handleError')
 
 export const fetchMatches = createAsyncThunk(
   'matches/fetchMatches',
   async (_, thunkApi) => {
-    // TODO: Is there a nicer way to handle this?
     if (
-        (thunkApi.getState() as any).matches.loading
-        || (thunkApi.getState() as any).matches.loaded
+        (thunkApi.getState() as { matches: MatchesState }).matches.loading
+        || (thunkApi.getState() as { matches: MatchesState }).matches.loaded
     ) return new Promise((_, reject) => reject('Already loading or loaded'))
 
-    // TODO: Handle errors
-    thunkApi.dispatch(setLoading())
-    return (await axios.get('https://lmt.fn.sportradar.com/demolmt/en/Etc:UTC/gismo/event_fullfeed/0/1/12074') as ServerResponse).data.doc[0].data
+    thunkApi.dispatch(setLoading(true))
+    let res: ServerSport[]
+    try {
+      res = (await axios.get('https://lmt.fn.sportradar.com/demolmt/en/Etc:UTC/gismo/event_fullfeed/0/1/12074') as ServerResponse).data.doc[0].data
+    } catch (error) {
+      thunkApi.dispatch(handleError())
+      return new Promise((_, reject) => reject(error))
+    }
+    thunkApi.dispatch(setLoading(false))
+    return res
   }
 );
 
@@ -112,7 +120,8 @@ const matchesSlice = createSlice<MatchesState, {}, "matches">({
   initialState: {
       data: {},
       loaded: false,
-      loading: false
+      loading: false,
+      error: false
   },
   reducers: {
 
@@ -160,20 +169,14 @@ const matchesSlice = createSlice<MatchesState, {}, "matches">({
       return { 
           data,
           loaded: true,
-          loading: false
+          loading: false,
+          error: false
       };
-    }).addCase(fetchMatches.rejected, () => {
-        return { 
-            data: {},
-            loaded: true,
-            loading: false
-        };
-    }).addCase(setLoading, () => {
-        return {
-            data: {},
-            loading: true,
-            loaded: false
-        }
+    }).addCase(setLoading, (state, action) => {
+        state.loading = action.payload
+    }).addCase(handleError, (state) => {
+        state.loading = false
+        state.error = true
     });
   },
 });

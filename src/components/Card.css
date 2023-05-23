@@ -45,15 +45,15 @@
 }
 
 .card--status-prematch {
-  background-image: url("../../public/assets/bg-prematch.jpg")
+  background-image: url("../../public/assets/bg-prematch.jpg");
 }
 
 .card--status-live {
-  background-image: url("../../public/assets/bg-live.jpg")
+  background-image: url("../../public/assets/bg-live.jpg");
 }
 
 .card--status-postmatch {
-  background-image: url("../../public/assets/bg-postmatch.jpg")
+  background-image: url("../../public/assets/bg-postmatch.jpg");
 }
 
 .card__center-container {
