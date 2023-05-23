@@ -23,13 +23,17 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .tsx,.ts,.js,.jsx . --ignore-path .gitignore"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "indent": ["error", 2]
+    }
   },
   "browserslist": {
     "production": [
