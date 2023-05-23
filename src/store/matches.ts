@@ -108,6 +108,7 @@ export const fetchMatches = createAsyncThunk(
       res = (await axios.get('https://lmt.fn.sportradar.com/demolmt/en/Etc:UTC/gismo/event_fullfeed/0/1/12074') as ServerResponse).data.doc[0].data
     } catch (error) {
       thunkApi.dispatch(handleError())
+      console.error(error)
       return new Promise((_, reject) => reject(error))
     }
     thunkApi.dispatch(setLoading(false))
