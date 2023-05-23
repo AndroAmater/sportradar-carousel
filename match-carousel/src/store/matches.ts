@@ -140,24 +140,24 @@ const matchesSlice = createSlice<MatchesState, {}, "matches">({
           output[sport._id].matches = sport.realcategories.flatMap((category: ServerCategory) => 
             category.tournaments.flatMap((tournament: ServerTournament) => 
               tournament.matches.flatMap((match: ServerMatch) => ({
-                id: match._id,
-                categoryName: category.name,
-                tournamentName: tournament.name,
-                tournamentSeasonTypeName: tournament.seasontypename,
-                homeTeamUid: match.teams.home.uid,
-                homeTeamName: match.teams.home.name,
-                homeTeamMediumName: match.teams.home.mediumname,
-                homeTeamShortName: match.teams.home.abbr,
-                homeTeamResult: match.result.home,
-                awayTeamUid: match.teams.away.uid,
-                awayTeamName: match.teams.away.name,
-                awayTeamMediumName: match.teams.away.mediumname,
-                awayTeamShortName: match.teams.away.abbr,
-                awayTeamResult: match.result.away,
-                time: match._dt.time,
-                date: match._dt.date,
-                statusName: match.status.name,
-                statusId: match.status._id
+                id: match._id ?? "",
+                categoryName: category.name ?? "",
+                tournamentName: tournament.name ?? "",
+                tournamentSeasonTypeName: tournament.seasontypename ?? "",
+                homeTeamUid: match.teams?.home?.uid ?? "",
+                homeTeamName: match.teams?.home?.name ?? "",
+                homeTeamMediumName: match.teams?.home?.mediumname ?? "",
+                homeTeamShortName: match.teams?.home?.abbr ?? "",
+                homeTeamResult: match.result?.home ?? 0,
+                awayTeamUid: match.teams?.away?.uid ?? "",
+                awayTeamName: match.teams?.away?.name ?? "",
+                awayTeamMediumName: match.teams?.away?.mediumname ?? "",
+                awayTeamShortName: match.teams?.away?.abbr ?? "",
+                awayTeamResult: match.result?.away ?? 0,
+                time: match._dt?.time ?? "",
+                date: match._dt?.date ?? "",
+                statusName: match.status?.name ?? "",
+                statusId: match.status?._id ?? 0
               }))
             )
           )
